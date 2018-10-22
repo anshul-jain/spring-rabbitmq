@@ -6,6 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.syssolu.rabbitmq.Model.SampleMessage;
+
 @SpringBootApplication
 public class RabbitmqApplication implements CommandLineRunner{
 
@@ -31,10 +33,17 @@ public class RabbitmqApplication implements CommandLineRunner{
 
 		/**
 		 * As we define Exchange and routing key it will go to exchange(rabbitmq.demo.exchange) and will be visible under the queue(rabbitmq.demo.queue)
-		 *
-		 * Default exchange :The default exchange is implicitly bound to every queue, with a routing key equal to the queue name. It it not possible to explicitly bind to, 
-		 * or unbind from the default exchange. It also cannot be deleted.
 		 */
-		rabbitTemplate.convertAndSend("rabbitmq.demo.exchange","rabbitmq.routing.key","Hello from the rabbit MQ project with binding");
+		rabbitTemplate.convertAndSend("rabbitmq.demo.exchange", "rabbitmq.routing.key", "Hello from the rabbit MQ project with binding");
+
+		/**
+		 * As we define Exchange and routing key it will go to exchange(rabbitmq.demo.exchange) and will be visible under the queue(rabbitmq.demo.queue)
+		 * Use the Model to send the Object to MQ
+		 */
+
+		SampleMessage sampleMessage = new SampleMessage();
+		sampleMessage.setName("Sample Message Name");
+		sampleMessage.setDescription("Sample Hello from the rabbit MQ project with binding description ");
+		rabbitTemplate.convertAndSend("rabbitmq.demo.exchange", "rabbitmq.routing.key", sampleMessage);
 	}
 }
